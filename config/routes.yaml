@@ -1,0 +1,28 @@
+controllers:
+    resource:
+        path: ../src/Controller/
+        namespace: App\Controller
+    type: attribute
+
+
+list_events:
+    path: /event
+    controller: App\Controller\EventController::listEvents
+
+view_event:
+    path: /event/{id}
+    controller: App\Controller\EventController::viewEvent
+    requirements:
+        id: \d+
+
+add_participant:
+    path: /event/{eventId}/participants/new
+    controller: App\Controller\ParticipantController::addParticipant
+    requirements:
+        eventId: \d+
+
+calculate_distance_to_event:
+    path: /event/{id}/distance
+    controller: App\Controller\EventController::calculateDistanceToEvent
+    requirements:
+        id: \d+

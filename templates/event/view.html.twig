@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails de l'événement{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">{{ event.name }}</h1>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h4 class="card-title text-center mb-4">Informations sur l'événement</h4>
+            <p><strong>Date :</strong> {{ event.date|date('d/m/Y') }}</p>
+            <p><strong>Lieu (Coordonnées) :</strong> {{ event.locationX }}, {{ event.locationY }}</p>
+            <p><strong>Adresse :</strong> {{ event.adresse }}</p>
+        </div>
+    </div>
+
+    <div class="card shadow-sm mt-4">
+        <div class="card-body">
+            <h4 class="card-title mb-3">Participants</h4>
+            {% if event.participants|length > 0 %}
+                <ul class="list-group">
+                    {% for participant in event.participants %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            {{ participant.name }}
+                            <span class="badge bg-primary">{{ participant.email }}</span>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p class="text-muted">Aucun participant inscrit.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="card shadow-sm mt-4">
+        <div class="card-body">
+            <h4 class="card-title mb-3">Calculer la distance entre votre domicile et le lieu de l'événement</h4>
+            <h6>Saisissez les coordonnées de votre chez vous </h6>
+            <form method="post">
+                <div class="mb-3">
+                    <label for="latitude" class="form-label">Votre latitude :</label>
+                    <input type="text" id="latitude" name="latitude" class="form-control" placeholder="Entrez votre latitude" required>
+                </div>
+                <div class="mb-3">
+                    <label for="longitude" class="form-label">Votre longitude :</label>
+                    <input type="text" id="longitude" name="longitude" class="form-control" placeholder="Entrez votre longitude" required>
+                </div>
+                <button type="submit" class="btn btn-primary w-100">Calculer la distance</button>
+            </form>
+
+            {% if distance is not null %}
+                <div class="alert alert-info mt-3">
+                    <strong>Distance :</strong> {{ distance|number_format(2) }} km
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="mt-4 d-flex justify-content-between">
+        <a href="{{ path('add_participant', { eventId: event.id }) }}" class="btn btn-success">Ajouter un participant</a>
+        <a href="{{ path('list_events') }}" class="btn btn-secondary">Retour à la liste</a>
+    </div>
+</div>
+{% endblock %}
